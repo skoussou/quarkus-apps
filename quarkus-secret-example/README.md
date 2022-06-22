@@ -8,8 +8,8 @@ If you want to learn more about Quarkus, please visit its website: https://quark
 
 ```shell script
 kubectl create secret generic db-credentials \
-    --from-literal=username=admin \
-    --from-literal=password=secret
+    --from-literal=db.username=admin \
+    --from-literal=db.password=secret
 ```
 ## Testing
 
