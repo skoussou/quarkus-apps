@@ -8,6 +8,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import io.smallrye.config.SecretKeys;
 import org.eclipse.microprofile.config.ConfigProvider;
 import org.jboss.logging.Logger;
 
@@ -30,10 +31,21 @@ public class GreetingResource {
     public Map securty() {
         HashMap<String, String> map = new HashMap<>();
 
-        map.put("db.username", ConfigProvider.getConfig().getValue("db.username", String.class));
-        map.put("db.password", ConfigProvider.getConfig().getValue("db.password", String.class));
-        Log.info("db.username : " + ConfigProvider.getConfig().getValue("db.username", String.class));
-        Log.info("db.password : " + ConfigProvider.getConfig().getValue("db.password", String.class));
+        String dbUsernameUnlockedSecretValue = SecretKeys.doUnlocked(() -> {
+            return (String) ConfigProvider.getConfig().getValue("db.username", String.class);
+        });
+        String dbPasswordUnlockedSecretValue = SecretKeys.doUnlocked(() -> {
+            return (String) ConfigProvider.getConfig().getValue("db.password", String.class);
+        });
+        Log.info("db.username : " + dbUsernameUnlockedSecretValue);
+        Log.info("db.password : " + dbPasswordUnlockedSecretValue);
+        map.put("db.username", dbUsernameUnlockedSecretValue);
+        map.put("db.password", dbPasswordUnlockedSecretValue);
+
+//        Log.info("db.username : " + ConfigProvider.getConfig().getValue("db.username", String.class));
+//        Log.info("db.password : " + ConfigProvider.getConfig().getValue("db.password", String.class));
+//        map.put("db.username", ConfigProvider.getConfig().getValue("db.username", String.class));
+//        map.put("db.password", ConfigProvider.getConfig().getValue("db.password", String.class));
 
         return map;
     }

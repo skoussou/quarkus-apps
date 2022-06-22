@@ -13,14 +13,24 @@ kubectl create secret generic db-credentials \
 ```
 ## Testing
 
-mvn clean compile test [-D-Dquarkus.test.profile=test]
+The application can be tested using:
 
+```shell script
+mvn clean compile test
+```
 
 ## Running the application in dev mode
 
 You can run your application in dev mode that enables live coding using:
 ```shell script
 ./mvnw compile quarkus:dev
+```
+## Deploying via quarkus-openshift plugin to openshift
+
+ Having logged into an openshift cluster the application can be tested in openshift using:
+
+```shell script
+mvn clean package -Dquarkus.kubernetes.deploy=true
 ```
 
 > **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at http://localhost:8080/q/dev/.
