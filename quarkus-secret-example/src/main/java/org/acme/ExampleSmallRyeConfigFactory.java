@@ -1,9 +1,6 @@
 package org.acme;
 
-import java.util.HashMap;
-
 import io.quarkus.runtime.configuration.ProfileManager;
-import io.smallrye.config.PropertiesConfigSource;
 import io.smallrye.config.SmallRyeConfig;
 import io.smallrye.config.SmallRyeConfigFactory;
 import io.smallrye.config.SmallRyeConfigProviderResolver;
@@ -12,7 +9,7 @@ import org.jboss.logging.Logger;
 
 public class ExampleSmallRyeConfigFactory extends SmallRyeConfigFactory {
 
-    private static final Logger Log = Logger.getLogger(ExampleSmallRyeConfigFactory.class);
+    private static final Logger Log = Logger.getLogger(ExampleInterceptorFactory.class);
 
     private static volatile SmallRyeConfig config;
 
@@ -45,7 +42,6 @@ public class ExampleSmallRyeConfigFactory extends SmallRyeConfigFactory {
         if (ExampleSmallRyeConfigFactory.config != null) {
             ConfigProviderResolver.instance().releaseConfig(ExampleSmallRyeConfigFactory.config);
         }
-        ExampleSmallRyeConfigFactory.config = config;
     }
 
 }

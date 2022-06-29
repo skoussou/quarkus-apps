@@ -9,22 +9,33 @@ import javax.annotation.Priority;
 @Priority(Priorities.LIBRARY + 100)
 public class DuplicateSecretKeysConfigSourceInterceptor implements ConfigSourceInterceptor {
     private static final long serialVersionUID = 7291982039729980590L;
-    private static final Logger Log = Logger.getLogger(ExampleInterceptor.class);
+
+   // private static final Logger Log = Logger.getLogger(DuplicateSecretKeysConfigSourceInterceptor.class);
 
     private static final String PREFIX = "db.";
 
+    private final Set<String> secrets;
+
+
     public DuplicateSecretKeysConfigSourceInterceptor() {
+        this.secrets = null;
+    }
+
+
+    public DuplicateSecretKeysConfigSourceInterceptor(Set<String> secrets) {
+        this.secrets = secrets;
     }
 
     @Override
     public ConfigValue getValue(final ConfigSourceInterceptorContext context, final String name) {
         final ConfigValue configValue = context.proceed(name);
-        if (isSecret(name)) Log.info("name ["+name+"], SecretKeys.isLocked() --> ["+SecretKeys.isLocked()+"], isSecret("+name+") --> ["+isSecret(name)+"]");
+        // if (isSecret(name)) Log.info("name ["+name+"], SecretKeys.isLocked() --> ["+SecretKeys.isLocked()+"], isSecret("+name+") --> ["+isSecret(name)+"]");
         return configValue;
     }
 
     private boolean isSecret(final String name)  {
-        return name.startsWith(PREFIX);
+        //return name.startsWith(PREFIX);
+        return secrets.contains(name);
     }
 }
 

@@ -16,7 +16,9 @@ public class DuplicateSecretKeysConfigSourceInterceptorTest {
 
     @Test
     public void testSecretKeysSecurityExceptions()  {
+        Log.info("----------------SecretKeys.isLocked() 0 --> "+SecretKeys.isLocked());
         SecurityException thrown = Assertions.assertThrows(SecurityException.class, () -> {ConfigProvider.getConfig().getValue("db.myprop1", String.class);});
+        Log.info("2");
         Assertions.assertEquals("SRCFG00024: Not allowed to access secret key db.myprop1", thrown.getMessage());
 
     }
@@ -31,12 +33,9 @@ public class DuplicateSecretKeysConfigSourceInterceptorTest {
         Log.info("----------------SecretKeys.isLocked() 1 --> "+SecretKeys.isLocked());
 //        String myprop1SecretValue = ConfigProvider.getConfig().getValue("db.myprop1", String.class);
         String myprop1SecretValue = SecretKeys.doUnlocked(() -> {
-
             if (ConfigProvider.getConfig() == null) Log.info("ConfigProvider is NULL");
             if (ConfigProvider.getConfig() != null) Log.info("ConfigProvider is NOT NULL");
             return (String) ConfigProvider.getConfig().getValue("db.myprop1", String.class);
-//            //config.getValue("db.myprop1", String.class);
-//            //return (String) smallRyeConfig.getValue("db.myprop1", String.class);
         });
         //final String myUsername = ConfigProvider.getConfig().getValue("db.myprop1", String.class);
         //assertEquals("intercepted testusername", myprop1SecretValue);
